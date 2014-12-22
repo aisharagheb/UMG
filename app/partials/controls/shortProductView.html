@@ -1,4 +1,4 @@
-<div class="451qa_prod_item row" ng-swipe-left="showSwipe = true">
+<div class="451qa_prod_item row littleBox" ng-swipe-left="showSwipe = true">
     <div class="col-sm-4 text-center">
         <a class="thumbnail" href="product/{{LineItem.Product.InteropID}}">
             <figure ng-show="LineItem.Variant.SmallImageUrl || LineItem.Product.SmallImageUrl" >
@@ -8,7 +8,7 @@
                 <span class="fa empty"><i class="fa fa-camera"></i></span>
             </div>
             <div class="btn btn-default">
-                {{('View' | r) + ' ' + ('Product' | r) | xlat}}
+                {{'View' | r}} {{'Product' | r}}
             </div>
         </a>
     </div>
@@ -18,37 +18,37 @@
                 <small class="pull-right text-info">{{LineItem.Product.ExternalID}}</small>
             </h3>
             <p ng-bind-html="trustedDescription(LineItem.Product)" ng-show="LineItem.Product.Description" />
-            <section class="hidden-xs hidden-sm panel-body">
-                <p ng-show="LineItem.PriceSchedule.PriceBreaks[0]" ng-if="!(user.Permissions.contains('HidePricing'))">
-                    {{LineItem.PriceSchedule.PriceBreaks[0].Quantity}}
-                    <span ng-show="LineItem.Product.QuantityMultiplier > 1">(x {{LineItem.Product.QuantityMultiplier}})</span>
-                    {{'for' | xlat}} {{LineItem.PriceSchedule.PriceBreaks[0].Price | culturecurrency}}
-                </p>
-                <p ng-show="LineItem.Product.UnitOfMeasure">
-                    {{'Unit of Measure' | r | xlat}}: {{LineItem.Product.UnitOfMeasure}}
-                </p>
-
-                <p ng-show="LineItem.Product.DisplayInventory && inventoryDisplay(LineItem.Product, LineItem.Variant) != undefined">
-                    {{'Quantity Available' | r | xlat}}: {{inventoryDisplay(LineItem.Product, LineItem.Variant) }}
-                </p>
-            </section>
         </div>
+        <section class="hidden-xs hidden-sm panel-body">
+            <p ng-show="LineItem.PriceSchedule.PriceBreaks[0]" ng-if="!(user.Permissions.contains('HidePricing'))">
+                {{LineItem.PriceSchedule.PriceBreaks[0].Quantity}}
+                <span ng-show="LineItem.Product.QuantityMultiplier > 1">(x {{LineItem.Product.QuantityMultiplier}})</span>
+                for {{LineItem.PriceSchedule.PriceBreaks[0].Price * LineItem.PriceSchedule.PriceBreaks[0].Quantity  | currency}}
+            </p>
+            <p ng-show="LineItem.Product.UnitOfMeasure">
+                {{'Unit of Measure' | r}}: {{LineItem.Product.UnitOfMeasure}}
+            </p>
+
+            <p ng-show="LineItem.Product.DisplayInventory && inventoryDisplay(LineItem.Product, LineItem.Variant) != undefined">
+                {{'Quantity Available' | r}}: {{inventoryDisplay(LineItem.Product, LineItem.Variant) }}
+            </p>
+        </section>
     </div>
-    <section class="hidden-lg hidden-md" ng-show="showSwipe" ng-swipe-right="showSwipe = false">
+    <section ng-show="showSwipe" ng-swipe-right="showSwipe = false">
         <div class="shortproduct-info panel-body text-center">
             <p ng-show="LineItem.PriceSchedule.PriceBreaks[0]" ng-if="!(user.Permissions.contains('HidePricing'))">
                 {{LineItem.PriceSchedule.PriceBreaks[0].Quantity}}
                 <span ng-show="LineItem.Product.QuantityMultiplier > 1">(x {{LineItem.Product.QuantityMultiplier}})</span>
-                {{'for' | xlat}} {{LineItem.PriceSchedule.PriceBreaks[0].Price | culturecurrency}}
+                for {{LineItem.PriceSchedule.PriceBreaks[0].Price | currency}}
             </p>
             <p ng-show="LineItem.Product.UnitOfMeasure">
-                {{'Unit of Measure' | r | xlat}}: {{LineItem.Product.UnitOfMeasure}}
+                {{'Unit of Measure' | r}}: {{LineItem.Product.UnitOfMeasure}}
             </p>
             <p ng-show="inventoryDisplay(LineItem.Product, LineItem.Variant)">
-                {{'Quantity Available' | r | xlat}}: {{inventoryDisplay(LineItem.Product, LineItem.Variant) }}
+                {{'Quantity Available' | r}}: {{inventoryDisplay(LineItem.Product, LineItem.Variant) }}
             </p>
             <button class="btn btn-default" redirect="product/{{LineItem.Product.InteropID}}">
-                {{('View' | r) + ' ' + ('Product' | r) | xlat}}
+                {{'View' | r}} {{'Product' | r}}
             </button>
         </div>
     </section>

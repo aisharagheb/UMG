@@ -1,3 +1,5 @@
 <ul>
-    <node class="nav" ng-repeat='node in tree' node='node' current="current"></node>
+
+    <node class="catTreeBack" style="border: 0px;" ng-class="getClass('/catalog/{{node.InteropID}}')" class="nav" ng-repeat='node in tree' node='node'><br/></node>
+
 </ul>

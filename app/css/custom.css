@@ -4,3 +4,201 @@ Theme name: My SPA Theme
 Version: 1.0
 Template: Howdy
 */
+.editLink a h3{
+    color:#FFFFFF;
+}
+.editLink a:hover{
+    Background-color: transparent;
+}
+.editLink a p:hover{
+    color: #2439d3;
+}
+
+.navbar-fixed-bottom ul li .btn{
+    border-radius: 15px;
+    margin: 2px;
+    width: 99%;
+}
+
+
+.smallOrderField .form-control {
+    font-size: 12px;
+}
+
+.order-cloud .form-signin {
+    max-width: 70em;
+    height: 800px;
+    padding: 1em 1em 2em;
+    margin: 2em auto;
+    background: transparent;
+    box-shadow: none;
+}
+
+
+.jumbotron h2 img{
+    max-height: 100%;
+    width: auto;
+    position: relative;
+}
+
+
+@font-face {
+    font-family: 'Syncopate', sans-serif;
+    font-weight: bold;
+}
+
+.universalFont {
+    font-family: 'Syncopate';
+    font-weight: bold;
+}
+
+@media (min-width: 250px){
+
+    .jumbotron h2 img{
+        height:75px ;
+        width: auto;
+        position: relative;
+
+    }
+}
+
+@media (min-width: 768px) {
+    .container,
+    .container-view {
+        width: 730px;
+    }
+    .jumbotron h2 img{
+        height: 200px ;
+        width: auto;
+        position: relative;
+
+    }
+
+}
+@media (min-width: 992px) {
+    .container,
+    .container-view {
+        width: 950px;
+    }
+    .jumbotron h2 img{
+        height:100%;
+        width: auto;
+        position: relative;
+
+    }
+}
+@media (min-width: 1200px) {
+    .container,
+    .container-view {
+        width: 1300px;
+    }
+
+    .jumbotron h2 img{
+        height:100%;
+        width: auto;
+        position: relative;
+
+    }
+}
+
+@media (min-width: 1600px) {
+    .container,
+    .container-view {
+        width: 1700px;
+    }
+
+    .jumbotron h2 img{
+        height:100%;
+        width: auto;
+        position: relative;
+
+    }
+}
+
+
+
+.littleBox {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #FFF;
+    color: #FFF;
+}
+
+
+
+section.security  {
+    margin:0;
+    background-color:#FFF;
+}
+
+section.security > div {
+    padding:0px 20px;
+}
+
+.table > thead > tr > td.success, .table > tbody > tr > td.success, .table > tfoot > tr > td.success, .table > thead > tr > th.success, .table > tbody > tr > th.success, .table > tfoot > tr > th.success, .table > thead > tr.success > td, .table > tbody > tr.success > td, .table > tfoot > tr.success > td, .table > thead > tr.success > th, .table > tbody > tr.success > th, .table > tfoot > tr.success > th{
+    background-color:transparent;
+}
+
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th{
+    background-color:transparent;
+}
+
+.pagination > li > a, .pagination > li > span{
+    background-color: transparent;
+    color: #85A8EE;
+}
+.pagination > .disabled > span, .pagination > .disabled > span:hover, .pagination > .disabled > span:focus, .pagination > .disabled > a, .pagination > .disabled > a:hover, .pagination > .disabled > a:focus {
+    background-color: transparent;
+    cursor: not-allowed;
+}
+.product-variants a{
+    background-color: rgba(245, 245, 245, 0.2);
+}
+.product-variants a:hover {
+    background-color: rgba(245, 245, 245, 0.6);
+}
+.lower {
+    text-transform: lowercase !important;
+}
+
+.text-success, .view-form-icon .quantity div input {
+    color:#ffffff;
+}
+
+.text-body {
+    color:#ffffff;
+}
+
+
+.editMode body{color: #f5f5f5;}
+.editMode a:hover{background-color: rgba(255, 255, 255, 0.3); color:#7EB6FF;  }
+.miniImage a:hover{background-color: rgba(255, 255, 255, 0.3);  }
+
+.catTreeBack{
+    background-color: rgba(36, 57, 211, 0.5);
+    border: none;
+    margin-top: 5px;
+}
+
+.panel-lineitem{
+    color: #FFFFFF;
+}
+.panel-nav ul li {
+    padding: 5px;
+}
+
+.loginImageSize{max-height: 300px; width: auto; }
+.jumbotron {margin:0 0 -45px; }
+
+.dropdown-menu{
+    z-index: 9999;
+}
+
+.navbar .alert-warning{
+    display: block;
+}
+
+.img {
+    max-width:100%;
+    height:auto;
+}

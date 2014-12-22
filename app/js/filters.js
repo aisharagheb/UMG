@@ -78,3 +78,64 @@ four51.app.filter('paginate', function() {
 		return input.slice(start);
 	}
 });
+
+four51.app.filter('HideAddToOrderSpecs', function() {
+	return function(value) {
+		var output = [];
+		angular.forEach(value, function(v) {
+			if (v.Name != 'Download' && v.Name != 'Preview')
+				output.push(v);
+		});
+		return output;
+	}
+});
+
+four51.app.filter('HideOrderField', function() {
+	return function(value) {
+		var output = [];
+		angular.forEach(value, function(v) {
+			if (v.Name != 'Payment Method')
+				output.push(v);
+		});
+		return output;
+	}
+});
+
+four51.app.filter('awaitingApprovalFilter', function() {
+	return function(value) {
+		var output = [];
+		angular.forEach(value, function(v) {
+			if (v.Status == 'AwaitingApproval')
+				output.push(v);
+		});
+		return output;
+	}
+});
+
+four51.app.filter('orderFilter', function() {
+	return function(value) {
+		var output = [];
+		angular.forEach(value, function(v) {
+			if (v.Status != 'AwaitingApproval')
+				output.push(v);
+		});
+		return output;
+	}
+});
+
+four51.app.filter('groupfilter', function() {
+	return function(input) {
+		var validGroups = ['Universal Music Distribution',
+			'Universal Music Enterprises',
+			'Universal Music Group',
+			'Universal Music Group International',
+			'Universal Music Group Latin Entertainment',
+			'Verve Music Group',
+			'VP'];
+		for (var i in validGroups) {
+			if (input.Name == validGroups[i])
+				return input.Name;
+		}
+		return '';
+	}
+});

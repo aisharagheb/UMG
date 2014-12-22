@@ -1,10 +1,10 @@
 <section class="order-print-view">
     <div class="order-print-view-header">
+
+        <img style="display: block; margin-left: auto; margin-right: auto" height="40%" width="40%" alt="{{user.CustomFields[0].Name}}" ng-src="{{user.CustomFields[0].File.Url}}" />
+
         <div>
-            <figure>
-                <img class="branding-print-view-logo" ng-src="{{user.Company.LogoUrl}}" />
-            </figure>
-            <h3>{{user.Company.Name}}</h3>
+            <h3>Universal Music Group - Stationery</h3>
         </div>
         <div>
             <h5>
@@ -21,6 +21,7 @@
                     </h3>
                 </div>
                 <div>
+                    <p ng-show="order.ExternalID">{{('Order' | r) + ' ' + ('ID' | r) | xlat}}: {{order.ExternalID}}</p>
                     <p ng-show="order.DateSubmitted">{{('Date' | r) + ' ' + ('Submitted' | r) | xlat}}: {{order.DateSubmitted | date:user.Culture.DateFormat.short}}</p>
                     <p>{{'Status' | r}}: {{order.StatusText}}</p>
                     <p ng-show="order.DateCompleted">{{('Date' | r) + ' ' + ('Completed' | r) | xlat}}: {{order.DateCompleted | date:user.Culture.DateFormat.short}}</p>
@@ -32,19 +33,11 @@
                         <span class="text-primary"><strong>{{'Ship to' | r | xlat}}</strong></span><br />
                         <span ng-show="order.LineItems[0].ShipFirstName || order.LineItems[0].ShipLastName">{{order.LineItems[0].ShipFirstName}} {{order.LineItems[0].ShipLastName}}</span>
                         <span ng-show="!order.LineItems[0].ShipFirstName || !order.LineItems[0].ShipLastName">{{order.ShipAddress.FirstName}} {{order.ShipAddress.LastName}}</span>
+                        <span>{{order.ShipAddress.CompanyName}}</span>
                         <br />{{order.ShipAddress.Street1}}<br>
                         {{order.ShipAddress.Street2}}<br ng-show="order.ShipAddress.Street2">
                         {{order.ShipAddress.City}}, {{order.ShipAddress.State}} {{order.ShipAddress.Zip}}
                         <div ng-if="order.ShipAddress.Country != 'US'">{{order.ShipAddress.Country}}</div>
-                    </address><br />
-                    <address ng-show="order.BillAddress">
-                        <span class="text-primary"><strong>{{'Bill to' | r | xlat}}</strong></span><br />
-                        <span ng-show="order.BillFirstName || order.BillLastName">{{order.BillFirstName}} {{order.BillLastName}}</span>
-                        <span ng-show="!order.BillFirstName || !order.BillLastName">{{order.BillAddress.FirstName}} {{order.BillAddress.LastName}}</span>
-                        <br />{{order.BillAddress.Street1}}<br>
-                        {{order.BillAddress.Street2}}<br ng-show="order.BillAddress.Street2">
-                        {{order.BillAddress.City}}, {{order.BillAddress.State}} {{order.BillAddress.Zip}}
-                        <div ng-if="order.BillAddress.Country != 'US'">{{order.BillAddress.Country}}</div>
                     </address>
                 </div>
             </div>
@@ -63,28 +56,21 @@
                     <p>{{'Total' | r | xlat}}: {{order.Total | culturecurrency}}</p>
                 </div>
             </div>
-        </div>
-    </div>
-    <div>
-        <div class="order-print-view-grid">
+
             <div class="order-print-view-line-items">
+
                 <div>
-                    <h3>
-                        {{order.LineItems.length}} {{'Item' + (order.LineItems.length > 1 ? 's' : '') | rl | xlat}} {{'in this' | rl | xlat:(currentOrder.LineItems.length)}} {{'Order' | rl | xlat}}
-                    </h3>
-                </div>
-                <div>
+                    <div>
+                        <p>
+                            {{order.LineItems.length}} {{'Item' + (order.LineItems.length > 1 ? 's' : '') | rl | xlat}} {{'in this' | rl | xlat:(currentOrder.LineItems.length)}} {{'Order' | rl | xlat}}
+                        </p>
+                    </div>
+
                     <div class="order-print-view-line-items-repeater" ng-repeat="item in order.LineItems">
                         <div class="order-print-view-line-items-product">
                             <p>{{item.ProductIDText}}</p>
                             <p>{{item.Product.Name}}</p>
-                            <ul class="list-group" ng-show="item.Specs | onproperty:{Property: 'CanSetForLineItem', Value: true}.length > 0">
-                                <li class="list-group-item" ng-repeat="spec in item.Specs | onproperty:{Property: 'CanSetForLineItem', Value: true} ">
-                                    <span class="text-info">{{spec.Name}}: </span>
-                                    <span ng-if="spec.ControlType == 'File'">{{spec.File.OriginalName + Extension}}</span>
-                                    <span ng-if="spec.ControlType != 'File'">{{spec.Value || ('(unspecified)' | xlat)}}</span>
-                                </li>
-                            </ul>
+
                             <div>
                                 <div>
                                     <p ng-show="hasShipperOnAnyLineItem()">{{item.ShipperName}}</p>
@@ -103,15 +89,9 @@
                                 </address>
                             </div>
                         </div>
-                        <div ng-if="!(user.Permissions.contains('HidePricing'))">
-                            <p>{{'Unit Price' | r | xlat}}: {{item.UnitPrice | culturecurrency}}</p>
-                        </div>
                         <div>
-                            <p ng-show="item.Product.QuantityMultiplier == 1">x {{item.Quantity}}</span>
-                            <p ng-show="item.Product.QuantityMultiplier > 1" >x {{item.Product.QuantityMultiplier * item.Quantity}}</span>
-                        </div>
-                        <div ng-if="!(user.Permissions.contains('HidePricing'))">
-                            {{'Total' | r | xlat}}: {{item.LineTotal | culturecurrency}}
+                            <span ng-show="item.Product.QuantityMultiplier == 1">x {{item.Quantity}}</span>
+                            <span ng-show="item.Product.QuantityMultiplier > 1" >x {{item.Product.QuantityMultiplier * item.Quantity}}</span>
                         </div>
                         <div ng-show="item.TotalShipped">
                             <p>{{('Quantity' | r) + ' ' + ('Shipped' | r) | xlat}}: {{item.TotalShipped}}</p>
@@ -152,6 +132,8 @@
                     </table>
                 </div>
             </div>
+
         </div>
     </div>
+
 </section>

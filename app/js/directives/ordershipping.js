@@ -1,41 +1,12 @@
-four51.app.directive('ordershipping', ['Order', 'Shipper', 'Address', 'AddressList', function(Order, Shipper, Address, AddressList) {
+four51.app.directive('ordershipping', ['Order', 'Shipper', 'Address', 'OrderConfig', function(Order, Shipper, Address, OrderConfig) {
 	var obj = {
 		restrict: 'AE',
 		templateUrl: 'partials/controls/orderShipping.html',
 		controller: ['$scope', function($scope) {
-			AddressList.clear();
-			AddressList.shipping(function(list) {
-				$scope.shipaddresses = list;
-				if ($scope.isEditforApproval) {
-					if (!AddressList.contains($scope.currentOrder.ShipAddress))
-						$scope.shipaddresses.push($scope.currentOrder.ShipAddress);
-				}
-			});
-			$scope.shipaddress = { Country: 'US', IsShipping: true, IsBilling: false };
-			$scope.$on('event:AddressCancel', function() {
-				$scope.shipaddressform = false;
-			});
-			$scope.$on('event:AddressSaved', function(event, address) {
-				if (address.IsShipping) {
-					$scope.currentOrder.ShipAddressID = address.ID;
-					if (!$scope.shipToMultipleAddresses)
-						$scope.setShipAddressAtOrderLevel();
-					$scope.shipaddressform = false;
-				}
-
-				AddressList.shipping(function(list) {
-					$scope.shipaddresses = list;
-					if ($scope.isEditforApproval) {
-						$scope.shipaddresses.push($scope.currentOrder.ShipAddress);
-						$scope.shipaddresses.push($scope.currentOrder.BillAddress);
-					}
-				});
-				$scope.shipaddress = { Country: 'US', IsShipping: true, IsBilling: false };
-			});
-
-			var saveChanges = function(callback, error) {
+			var saveChanges = function(callback) {
 				$scope.errorMessage = null;
-				var auto = $scope.currentOrder.autoID;
+				var auto = true;
+				$scope.currentOrder.ExternalID = 'auto';
 				Order.save($scope.currentOrder,
 					function(data) {
 						$scope.currentOrder = data;
@@ -47,26 +18,41 @@ four51.app.directive('ordershipping', ['Order', 'Shipper', 'Address', 'AddressLi
 						if (callback) callback($scope.currentOrder);
 					},
 					function(ex) {
-						if (auto)
-							$scope.currentOrder.ExternalID = auto;
+						//$scope.currentOrder.ExternalID = null;
 						$scope.errorMessage = ex.Message;
 						$scope.shippingUpdatingIndicator = false;
 						$scope.shippingFetchIndicator = false;
-						if (error) error(ex);
 					}
 				);
 			};
 
 			Shipper.query($scope.currentOrder, function(list) {
 				$scope.shippers = list;
-				// sometimes the current shipper is not longer available. we need to clear the shipping information in that case
-				var exists = false;
-				angular.forEach(list, function(s) {
-					if (!exists && $scope.currentOrder.LineItems[0].ShipperID == s.ID)
-						exists = true;
-				});
-				if (!exists) {
-					Order.clearshipping($scope.currentOrder);
+			});
+
+			//Auto populate the shipper
+			$scope.$watch('currentOrder.ShipAddressID', function() {
+				if ($scope.currentOrder) {
+					if ($scope.currentOrder.ShipAddressID) {
+						$scope.$watch('shippers', function () {
+							angular.forEach($scope.shippers, function (sh) {
+								if (sh.Name == 'UMG Stationery - Standard' && !$scope.currentOrder.ShipperID) {
+									$scope.currentOrder.ShipperID = sh.ID;
+									angular.forEach($scope.currentOrder.LineItems, function (li) {
+										li.ShipperID = sh.ID;
+										li.ShipperName = sh.Name;
+									});
+								}
+							});
+						});
+					}
+					else {
+						$scope.currentOrder.ShipperID = null;
+						angular.forEach($scope.currentOrder.LineItems, function (li) {
+							li.ShipperID = null;
+							li.ShipperName = null;
+						})
+					}
 				}
 			});
 
@@ -121,18 +107,11 @@ four51.app.directive('ordershipping', ['Order', 'Shipper', 'Address', 'AddressLi
 			$scope.setShipAddressAtLineItem = function(item) {
 				item.ShipFirstName = null;
 				item.ShipLastName = null;
-				saveChanges(
-					function(order) {
-						Shipper.query(order,
-							function(list) {
-								$scope.shippers = list;
-							}
-						);
-					},
-					function(ex) {
-						item.ShipAddressID = null;
-					}
-				);
+				saveChanges(function(order) {
+					Shipper.query(order, function(list) {
+						$scope.shippers = list;
+					});
+				});
 			};
 
 			$scope.setShipAddressAtOrderLevel = function() {
@@ -148,26 +127,17 @@ four51.app.directive('ordershipping', ['Order', 'Shipper', 'Address', 'AddressLi
 					li.Shipper = null;
 					li.ShipperID = null;
 				});
-				saveChanges(
-					function(order) {
-						Shipper.query(order, function(list) {
-							$scope.shippers = list;
-								$scope.shippingFetchIndicator = false;
-							}
-						);
-					},
-					function(ex) {
-						$scope.currentOrder.ShipAddressID = null;
-						angular.forEach($scope.currentOrder.LineItems, function(li) {
-							li.ShipAddressID = null;
-						});
-					}
-				);
+				saveChanges(function(order) {
+					Shipper.query(order, function(list) {
+						$scope.shippers = list;
+						$scope.shippingFetchIndicator = false;
+					});
+				});
 			};
 			$scope.updateShipper = function(li) {
 				$scope.shippingUpdatingIndicator = true;
 				$scope.shippingFetchIndicator = true;
-				if (!li) { // at the order level
+				if (!li) {
 					angular.forEach($scope.shippers, function(s) {
 						if (s.Name == $scope.currentOrder.LineItems[0].ShipperName)
 							$scope.currentOrder.Shipper = s;
@@ -183,7 +153,7 @@ four51.app.directive('ordershipping', ['Order', 'Shipper', 'Address', 'AddressLi
 						$scope.shippingFetchIndicator = false;
 					});
 				}
-				else { // at the lineitem level for multiple shipping
+				else {
 					angular.forEach($scope.shippers, function(s) {
 						if (s.Name == li.ShipperName)
 							li.Shipper = s;

@@ -1,4 +1,1 @@
-four51.app.factory('WhiteLabel', function() {
-	var replacements = [];
-	return { replacements: replacements };
-});
+four51.app.factory('WhiteLabel', function() { var replacements = [{"key":",/sp","value":""},{"key":"/sp","value":""},{"key":"Date","value":"Date Needed"},{"key":"Orders","value":"My Orders"},{"key":"Open","value":"In Production"},{"key":"Closed","value":"Completed"}]; return { replacements: replacements }; });
