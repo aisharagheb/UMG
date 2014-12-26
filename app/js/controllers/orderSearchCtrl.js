@@ -15,6 +15,11 @@ four51.app.controller('OrderSearchCtrl', ['$scope', '$location', 'OrderSearchCri
 				$scope.settings.listCount = count;
 				$scope.showNoResults = list.length == 0;
 				$scope.orderLoadingIndicator = false;
+				angular.forEach($scope.order, function(o) {
+					if(!$scope.order.ExternalID) {
+						$scope.settings.listCount--;
+					}
+				});
 			}, $scope.settings.currentPage, $scope.settings.pageSize);
 		}
 

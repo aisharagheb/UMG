@@ -14,6 +14,7 @@
             <div class="col-xs-12 col-sm-2">{{'Status' | r | xlat}}</div>
             <div class="col-xs-12 col-sm-2">{{'Submitted' | r | xlat}}</div>
             <div class="col-xs-12 col-sm-2">{{('Submitted' | r) + ' ' + ('Date' | r) | xlat}}</div>
+            <div class="col-xs-12 col-sm-2">{{'Approver' | r}}</div>
             <div class="col-xs-12 col-sm-2" ng-if="!(user.Permissions.contains('HidePricing'))">{{'Total' | r | xlat}}</div>
         </div>
         <div class="row" ng-repeat="order in orders | paginate:(settings.currentPage-1) * settings.pageSize | limitTo:settings.pageSize">
@@ -36,6 +37,10 @@
             <div class="col-sm-2">
                 <span class="visible-xs panel-table-heading-xs text-info">{{('Submitted' | r) + ' ' + ('Date' | r) | xlat}}</span>
                 {{order.DateSubmitted || order.DateCreated | date:user.Culture.DateFormat.long}}
+            </div>
+            <div class="col-sm-2">
+                <span class="visible-xs panel-table-heading-xs text-info">{{'Approver' | r}}</span>
+                <p ng-repeat="rule in order.Approvals">{{rule.ApprovingPartyName}}</p>
             </div>
             <div class="col-sm-2" ng-if="!(user.Permissions.contains('HidePricing'))">
                 <span class="visible-xs heading-xs text-info">{{'Total' | r}}</span>
