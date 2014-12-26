@@ -8,9 +8,7 @@ four51.app.controller('CheckOutViewCtrl', ['$scope', '$routeParams', '$location'
 				$scope.currentOrder = order;
 			});
 		}
-
-		//auto generate Order ID
-		$scope.currentOrder.ExternalID = $scope.currentOrder.autoID ? null : 'auto';
+		else $scope.currentOrder.ExternalID = $scope.currentOrder.autoID ? null : 'auto';
 
 		//Less Than 10 Days should default to a default Rush Order
 		$scope.currentDate = new Date();
