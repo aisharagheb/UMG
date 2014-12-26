@@ -9,7 +9,7 @@ four51.app.controller('CheckOutViewCtrl', ['$scope', '$routeParams', '$location'
 			});
 		}
 
-		if ($scope.currentOrder.ExternalID == null) {
+		if (!$scope.currentOrder.ExternalID) {
 			$scope.currentOrder.ExternalID = $scope.currentOrder.autoID ? null : 'auto';
 		}
 
