@@ -116,7 +116,8 @@ four51.app.controller('CartViewCtrl', ['$scope', '$routeParams', '$location', '$
 
 		$scope.checkOut = function() {
 			$scope.displayLoadingIndicator = true;
-			OrderConfig.address($scope.currentOrder, $scope.user);
+			if (!isEditforApproval)
+				OrderConfig.address($scope.currentOrder, $scope.user);
 			Order.save($scope.currentOrder,
 				function(data) {
 					$scope.currentOrder = data;
@@ -153,5 +154,9 @@ four51.app.controller('CartViewCtrl', ['$scope', '$routeParams', '$location', '$
 
 		$scope.onPrint = function()  {
 			window.print();
+		};
+
+		$scope.cancelEdit = function() {
+			$location.path('order');
 		};
 	}]);
