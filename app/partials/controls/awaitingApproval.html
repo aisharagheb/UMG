@@ -1,7 +1,7 @@
 <div class="alert alert-warning col-lg-4 col-lg-offset-4 text-center" ng-repeat="criteria in OrderSearchCriteria | filter:{Type:'Standard'} | awaitingApprovalFilter" ng-show="!criteria.Count">
     You have no orders available to approve
 </div>
-<div class="panel panel-default" ng-show="orders">
+<div class="panel panel-default" ng-show="isApprover">
     <div class="panel-table">
         <loadingindicator ng-show="pagedIndicator" />
         <div ng-show="settings.listCount > settings.pageSize">
