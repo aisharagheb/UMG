@@ -39,6 +39,6 @@ four51.app.config(['$routeProvider', '$locationProvider', function($routeProvide
 		when('/cart/:id', { templateUrl: 'partials/cartView.html', controller: 'CartViewCtrl' }).
 		when('/report/:id', { templateUrl: 'partials/Reporting/reportView.html', controller: 'ReportCtrl' }).
 		when('/contactus/', { templateUrl: 'partials/Messages/contactus.html' }).
-		when('/approval', { templateUrl: 'partials/controls/awaitingApproval.html', controller: 'AwaitingApprovalCtrl' }).
+		when('/approval', { templateUrl: 'partials/controls/awaitingApproval.html', controller: 'OrderSearchCtrl' }).
 		otherwise({redirectTo: '/catalog'});
 }]);
