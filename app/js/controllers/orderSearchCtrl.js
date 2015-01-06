@@ -1,5 +1,5 @@
-four51.app.controller('OrderSearchCtrl', ['$scope', '$location', 'OrderSearchCriteria', 'OrderSearch', 'Order', 'Address', '$routeParams',
-	function ($scope,  $location, OrderSearchCriteria, OrderSearch, Order, Address, $routeParams) {
+four51.app.controller('OrderSearchCtrl', ['$scope', '$location', 'OrderSearchCriteria', 'OrderSearch', 'Order',
+	function ($scope,  $location, OrderSearchCriteria, OrderSearch, Order) {
 		$scope.settings = {
 			currentPage: 1,
 			pageSize: 10
