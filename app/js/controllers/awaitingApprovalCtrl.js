@@ -5,6 +5,20 @@ four51.app.controller('AwaitingApprovalCtrl', ['$scope', '$location', 'OrderSear
             pageSize: 10
         };
 
+        function getOrdersAwaitingApproval() {
+            var criteria = {Type: "Standard", Status: "AwaitingApproval", DisplayName: "Awaiting Approval", LastN: 0, OrderID: null};
+            $scope.orderLoadingIndicator = true;
+            OrderSearch.search(criteria, function(list, count) {
+                $scope.orderLoadingIndicator = true;
+                $scope.orders = list;
+                $scope.settings.listCount = count;
+                $scope.showNoResults = list.length == 0;
+                $scope.orderLoadingIndicator = false;
+            }, $scope.settings.currentPage, $scope.settings.pageSize);
+        }
+
+        getOrdersAwaitingApproval();
+
         $scope.$watch("orders", function(){
             angular.forEach($scope.orders, function(o){
                 if($scope.URL.indexOf(o.ExternalID) > -1){
