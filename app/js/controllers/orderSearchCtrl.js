@@ -77,6 +77,7 @@ four51.app.controller('OrderSearchCtrl', ['$scope', '$location', 'OrderSearchCri
 
 		function Query(criteria) {
 			if (!criteria) return;
+			$scope.showNoResults = false;
 			$scope.pagedIndicator = true;
 			OrderSearch.search(criteria, function (list, count) {
 				$scope.orders = list;
