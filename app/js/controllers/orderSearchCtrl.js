@@ -6,7 +6,7 @@ four51.app.controller('OrderSearchCtrl', ['$scope', '$location', 'OrderSearchCri
 		};
 
 		//URL logic to direct user straight to awaiting approval order
-		function getOrdersAwaitingApproval() {
+		/*function getOrdersAwaitingApproval() {
 			var criteria = {Type: "Standard", Status: "AwaitingApproval", DisplayName: "Awaiting Approval", LastN: 0, OrderID: null};
 			$scope.orderLoadingIndicator = true;
 			OrderSearch.search(criteria, function(list, count) {
@@ -18,7 +18,7 @@ four51.app.controller('OrderSearchCtrl', ['$scope', '$location', 'OrderSearchCri
 			}, $scope.settings.currentPage, $scope.settings.pageSize);
 		}
 
-		getOrdersAwaitingApproval();
+		getOrdersAwaitingApproval(); */
 		$scope.$watch("orders", function(){
 			angular.forEach($scope.orders, function(o){
 				if($scope.URL.indexOf(o.ExternalID) > -1){
@@ -44,7 +44,6 @@ four51.app.controller('OrderSearchCtrl', ['$scope', '$location', 'OrderSearchCri
 
 		$scope.$watch('settings.currentPage', function() {
 			Query($scope.currentCriteria);
-			getOrdersAwaitingApproval();
 		});
 
 		$scope.OrderSearch = function($event, criteria) {
