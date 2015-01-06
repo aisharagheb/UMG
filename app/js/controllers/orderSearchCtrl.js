@@ -44,6 +44,7 @@ four51.app.controller('OrderSearchCtrl', ['$scope', '$location', 'OrderSearchCri
 
 		$scope.$watch('settings.currentPage', function() {
 			Query($scope.currentCriteria);
+			getOrdersAwaitingApproval();
 		});
 
 		$scope.OrderSearch = function($event, criteria) {
