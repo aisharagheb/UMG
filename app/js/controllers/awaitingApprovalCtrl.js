@@ -1,23 +1,24 @@
-four51.app.controller('AwaitingApprovalCtrl', ['$scope', '$location', 'OrderSearchCriteria', 'OrderSearch',
-    function ($scope,  $location, OrderSearchCriteria, OrderSearch) {
+four51.app.controller('AwaitingApprovalCtrl', ['$scope', '$location', 'OrderSearchCriteria', 'OrderSearch', 'Order',
+    function ($scope,  $location, OrderSearchCriteria, OrderSearch, Order) {
         $scope.settings = {
             currentPage: 1,
             pageSize: 10
         };
 
+        //URL logic to direct user straight to awaiting approval order
         function getOrdersAwaitingApproval() {
-            var criteria = {Type: "Standard", Status: "AwaitingApproval", DisplayName: "Awaiting Approval", LastN: 0, OrderID: null};
-            $scope.orderLoadingIndicator = true;
-            OrderSearch.search(criteria, function(list, count) {
-                $scope.orderLoadingIndicator = true;
-                $scope.orders = list;
-                $scope.settings.listCount = count;
-                $scope.showNoResults = list.length == 0;
-                $scope.orderLoadingIndicator = false;
-            }, $scope.settings.currentPage, $scope.settings.pageSize);
-        }
+         var criteria = {Type: "Standard", Status: "AwaitingApproval", DisplayName: "Awaiting Approval", LastN: 0, OrderID: null};
+         $scope.orderLoadingIndicator = true;
+         OrderSearch.search(criteria, function(list, count) {
+         $scope.orderLoadingIndicator = true;
+         $scope.orders = list;
+         $scope.settings.listCount = count;
+         $scope.showNoResults = list.length == 0;
+         $scope.orderLoadingIndicator = false;
+         }, $scope.settings.currentPage, $scope.settings.pageSize);
+         }
 
-        getOrdersAwaitingApproval();
+         getOrdersAwaitingApproval();
 
         $scope.$watch("orders", function(){
             angular.forEach($scope.orders, function(o){
@@ -33,6 +34,13 @@ four51.app.controller('AwaitingApprovalCtrl', ['$scope', '$location', 'OrderSear
             $scope.hasStandardTypes = _hasType(data, 'Standard');
             $scope.hasReplenishmentTypes = _hasType(data, 'Replenishment');
             $scope.hasPriceRequestTypes = _hasType(data, 'PriceRequest');
+            var path = $location.$$path;
+            angular.forEach($scope.OrderSearchCriteria, function(c){
+                if(c.Status == 'AwaitingApproval' && path =='/approval'){
+                    $scope.currentCriteria = c;
+                    Query(c);
+                }
+            });
         });
 
         $scope.$watch('settings.currentPage', function() {
@@ -44,7 +52,6 @@ four51.app.controller('AwaitingApprovalCtrl', ['$scope', '$location', 'OrderSear
             $scope.currentCriteria = criteria;
             Query(criteria);
         };
-
         function _hasType(data, type) {
             var hasType = false;
             angular.forEach(data, function(o) {
@@ -84,4 +91,15 @@ four51.app.controller('AwaitingApprovalCtrl', ['$scope', '$location', 'OrderSear
             }, $scope.settings.currentPage, $scope.settings.pageSize);
             $scope.orderSearchStat = criteria;
         }
+
+
+        /*$scope.$watch("orders", function(){
+         if($scope.orders){
+         angular.forEach($scope.orders, function(o) {
+         Order.get(o.ID, function (data) {
+         o = data;
+         });
+         });
+         }
+         })*/
     }]);
