@@ -5,6 +5,15 @@ four51.app.controller('AwaitingApprovalCtrl', ['$scope', '$location', 'OrderSear
             pageSize: 10
         };
 
+        $scope.$watch("orders", function(){
+            angular.forEach($scope.orders, function(o){
+                if($scope.URL.indexOf(o.ExternalID) > -1){
+                    $location.path("/order/" + o.ID);
+                    $scope.$parent.URL = null;
+                }
+            });
+        },true);
+
         OrderSearchCriteria.query(function(data) {
             $scope.OrderSearchCriteria = data;
             $scope.hasStandardTypes = _hasType(data, 'Standard');
@@ -31,12 +40,30 @@ four51.app.controller('AwaitingApprovalCtrl', ['$scope', '$location', 'OrderSear
             return hasType;
         }
 
+        function getOrder(o) {
+            Order.get(o.ID, function (data) {
+                o.Approvals = data.Approvals;
+                //Hide approval tab for non-approvers
+                $scope.isApprover = false;
+                if($scope.orders){
+                    angular.forEach($scope.orders, function(o){
+                        if(o.Status == 'AwaitingApproval'){
+                            $scope.isApprover = true;
+                        }
+                    });
+                }
+            });
+        }
+
         function Query(criteria) {
             if (!criteria) return;
             $scope.showNoResults = false;
             $scope.pagedIndicator = true;
             OrderSearch.search(criteria, function (list, count) {
                 $scope.orders = list;
+                angular.forEach($scope.orders, function(order) {
+                    getOrder(order);
+                });
                 $scope.settings.listCount = count;
                 $scope.showNoResults = list.length == 0;
                 $scope.pagedIndicator = false;
