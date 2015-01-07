@@ -19,7 +19,7 @@
 
                         <p id="451qa_msg_login" ng-show="loginMessage" ng-bind-html="loginMessage" class="alert alert-info"></p>
 
-                        <div class="view-form-icon" ng-show="!showEmailHelp">
+                        <div class="view-form-icon" ng-show="!showEmailHelp && !PasswordReset" >
                             <div>
                                 <label ng-show="credentials.Username">{{'Username' | r}}</label>
                                 <input autofocus class="form-control" type="text" ng-model="credentials.Username" placeholder="{{'Username' | r}}" />
@@ -52,7 +52,7 @@
 
                         </div>
                         <div>
-                            <div class="view-form-icon" ng-show="PasswordSecurityException">
+                            <div class="view-form-icon" ng-show="PasswordSecurityException" >
                                 <div>
                                     <label ng-show="credentials.CurrentPassword">Current {{'Password' | r}}</label>
                                     <input class="form-control" name="current_password" type="password" ng-model="credentials.CurrentPassword" placeholder="Current {{'Password' | r}}" />
